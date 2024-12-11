@@ -1392,6 +1392,11 @@ void MqttClient::message_arrived(mqtt::const_message_ptr mqtt_msg) {
     builtin_interfaces::msg::Time(rclcpp::Clock(RCL_SYSTEM_TIME).now()));
 
   std::string mqtt_topic = mqtt_msg->get_topic();
+  if(mqtt_msg->is_retained()){
+    RCLCPP_INFO(get_logger(), "Received MQTT message on topic '%s' but it is retained so ignoring it",mqtt_topic.c_str());
+    return;
+  }
+
   RCLCPP_DEBUG(get_logger(), "Received MQTT message on topic '%s'",
                mqtt_topic.c_str());
 
