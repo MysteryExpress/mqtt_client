@@ -1147,11 +1147,11 @@ void MqttClient::mqtt2primitive(mqtt::const_message_ptr mqtt_msg) {
       if (pos == str_msg.size()) {
 
         // construct and serialize ROS message
-        std_msgs::msg::Int32 msg;
+        std_msgs::msg::UInt16 msg;
         msg.data = int_msg;
         serializeRosMessage(msg, serialized_msg);
 
-        ros_msg_type = "std_msgs/msg/Int32";
+        ros_msg_type = "std_msgs/msg/UInt16";
         found_primitive = true;
       }
     } catch (const std::invalid_argument& ex) {
