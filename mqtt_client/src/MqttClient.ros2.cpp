@@ -48,6 +48,7 @@ SOFTWARE.
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/u_int64.hpp>
 #include <std_msgs/msg/u_int8.hpp>
+#include <std_msgs/msg/empty.hpp>
 
 #include <rclcpp_components/register_node_macro.hpp>
 RCLCPP_COMPONENTS_REGISTER_NODE(mqtt_client::MqttClient)
@@ -103,6 +104,10 @@ bool fixedMqtt2PrimitiveRos(mqtt::const_message_ptr mqtt_msg,
     if (msg_type == "std_msgs/msg/String") {
       std_msgs::msg::String msg;
       msg.data = mqtt_msg->to_string();
+
+      serializeRosMessage(msg, serialized_msg);
+    } else if (msg_type == "std_msgs/msg/Empty") {
+      std_msgs::msg::Empty msg;
 
       serializeRosMessage(msg, serialized_msg);
     } else if (msg_type == "std_msgs/msg/Bool") {
@@ -1111,7 +1116,6 @@ void MqttClient::mqtt2ros(mqtt::const_message_ptr mqtt_msg,
 
 
 void MqttClient::mqtt2primitive(mqtt::const_message_ptr mqtt_msg) {
-
   std::string mqtt_topic = mqtt_msg->get_topic();
   Mqtt2RosInterface& mqtt2ros = mqtt2ros_[mqtt_topic];
 
@@ -1220,7 +1224,6 @@ void MqttClient::mqtt2primitive(mqtt::const_message_ptr mqtt_msg) {
 }
 
 void MqttClient::mqtt2fixed(mqtt::const_message_ptr mqtt_msg) {
-
   std::string mqtt_topic = mqtt_msg->get_topic();
   Mqtt2RosInterface& mqtt2ros = mqtt2ros_[mqtt_topic];
 
